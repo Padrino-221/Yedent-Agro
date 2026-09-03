@@ -1,7 +1,42 @@
 'use client'
 
-import { Children, cloneElement, isValidElement, ReactNode, useRef, type MouseEvent } from 'react'
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  ReactNode,
+  useEffect,
+  useState,
+  useRef,
+  type MouseEvent,
+} from 'react'
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion'
+
+/* ------------------------------------------------------------------ */
+/* Animations toggle — disabled on small screens and for users who     */
+/* prefer reduced motion. Server/first render keeps animations on so   */
+/* hydration never mismatches; the effect flips it off right after     */
+/* mount, which simply leaves content statically visible.              */
+/* ------------------------------------------------------------------ */
+const MOBILE_QUERY = '(max-width: 767px), (prefers-reduced-motion: reduce)'
+
+export function useAnimationsEnabled(): boolean {
+  const [enabled, setEnabled] = useState(true)
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY)
+    const update = () => setEnabled(!mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  return enabled
+}
+
+const Static = ({ children, className }: { children: ReactNode; className?: string }) => (
+  <div className={className}>{children}</div>
+)
 
 /* ------------------------------------------------------------------ */
 /* Scroll reveal — slides/rotates child into view with a spring        */
@@ -17,6 +52,9 @@ export function Reveal({
   direction?: 'up' | 'down' | 'left' | 'right' | 'none'
   className?: string
 }) {
+  const animationsOn = useAnimationsEnabled()
+  if (!animationsOn) return <Static className={className}>{children}</Static>
+
   const offsets = {
     up: { hidden: { opacity: 0, y: 60, scale: 0.98 }, visible: { opacity: 1, y: 0, scale: 1 } },
     down: { hidden: { opacity: 0, y: -60, scale: 0.98 }, visible: { opacity: 1, y: 0, scale: 1 } },
@@ -82,6 +120,9 @@ export function RevealItem({
   direction?: 'up' | 'down' | 'left' | 'right' | 'none'
   staggerDelay?: number
 }) {
+  const animationsOn = useAnimationsEnabled()
+  if (!animationsOn) return <Static className={className}>{children}</Static>
+
   const hidden = {
     up: { opacity: 0, y: 40, scale: 0.98 },
     down: { opacity: 0, y: -40, scale: 0.98 },
@@ -117,9 +158,15 @@ export function Parallax({
   to?: number
   className?: string
 }) {
+  const animationsOn = useAnimationsEnabled()
   const ref = useRef<HTMLDivElement>(null)
+  // Hook order must be stable: read scroll position regardless, but only
+  // attach the transform when animations are enabled.
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], [from, to])
+
+  if (!animationsOn) return <Static className={className}>{children}</Static>
+
   return (
     <motion.div ref={ref} style={{ y }} className={className}>
       {children}
@@ -141,9 +188,13 @@ export function ParallaxScale({
   to?: number
   className?: string
 }) {
+  const animationsOn = useAnimationsEnabled()
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'center center'] })
   const scale = useSpring(useTransform(scrollYProgress, [0, 1], [from, to]), { stiffness: 60, damping: 20 })
+
+  if (!animationsOn) return <Static className={className}>{children}</Static>
+
   return (
     <motion.div ref={ref} style={{ scale }} className={className}>
       {children}
@@ -163,12 +214,15 @@ export function TiltCard({
   className?: string
   maxTilt?: number
 }) {
+  const animationsOn = useAnimationsEnabled()
   const ref = useRef<HTMLDivElement>(null)
   const gx = useMotionValue(50)
   const gy = useMotionValue(50)
   const rotateX = useSpring(useTransform(gy, [0, 100], [maxTilt, -maxTilt]), { stiffness: 150, damping: 20 })
   const rotateY = useSpring(useTransform(gx, [0, 100], [-maxTilt, maxTilt]), { stiffness: 150, damping: 20 })
   const glare = useMotionTemplate`radial-gradient(420px circle at ${gx}% ${gy}%, rgba(175,230,127,0.18), transparent 60%)`
+
+  if (!animationsOn) return <div className={className}>{children}</div>
 
   function onMove(e: MouseEvent<HTMLDivElement>) {
     const rect = ref.current?.getBoundingClientRect()
@@ -211,6 +265,10 @@ export function LiftCard({
   children: ReactNode
   className?: string
 }) {
+  const animationsOn = useAnimationsEnabled()
+
+  if (!animationsOn) return <div className={className}>{children}</div>
+
   return (
     <motion.div
       whileHover={{ y: -8, scale: 1.02 }}

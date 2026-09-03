@@ -1,15 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getHeroSlides } from '@/lib/api'
 import type { HeroSlide } from '@/lib/api'
+import { useAnimationsEnabled } from '@/components/Motion'
 
 export default function HeroCarousel({ initialSlides }: { initialSlides?: HeroSlide[] | null }) {
   const [slides, setSlides] = useState<HeroSlide[]>(initialSlides ?? [])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(!initialSlides)
+  const animationsOn = useAnimationsEnabled()
 
   useEffect(() => {
     if (!initialSlides) {
@@ -33,10 +35,57 @@ export default function HeroCarousel({ initialSlides }: { initialSlides?: HeroSl
 
   const slide = slides[currentIndex]
 
+  // Key the background media by its source rather than the slide index so
+  // the video keeps playing uninterrupted when consecutive slides share the
+  // same media (only the text/CTA changes). It only restarts when the media
+  // actually changes between slides.
+  const mediaSource = slide.video_url || slide.image_url || '/yedent-hero.mp4'
+
+  const slideText: ReactNode = (
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+      {/* Left: text */}
+      <div className="max-w-3xl text-left">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-serif text-white leading-[1.1] tracking-tight mb-6">
+          {slide.title}
+        </h1>
+
+        {slide.subtitle && (
+          <p className="text-lg sm:text-xl text-white/80 mb-3 font-medium">
+            {slide.subtitle}
+          </p>
+        )}
+
+        {slide.description && (
+          <p className="text-sm sm:text-base text-white/60 leading-relaxed mb-8 max-w-2xl">
+            {slide.description}
+          </p>
+        )}
+      </div>
+
+      {/* Right: CTA buttons */}
+      <div className="flex flex-wrap items-center gap-4 shrink-0">
+        {slide.cta_label && slide.cta_href && (
+          <Link
+            href={slide.cta_href}
+            className="bg-[#96e048] hover:bg-[#83cc37] text-[#162e1e] font-bold text-xs sm:text-sm tracking-wider uppercase px-7 py-3.5 transition-all duration-200"
+          >
+            {slide.cta_label}
+          </Link>
+        )}
+        <Link
+          href="/contact"
+          className="border border-white/90 bg-black/20 hover:bg-white hover:text-[#162e1e] text-white font-bold text-xs sm:text-sm tracking-wider uppercase px-7 py-3.5 transition-all duration-200 backdrop-blur-sm"
+        >
+          REQUEST A QUOTE
+        </Link>
+      </div>
+    </div>
+  )
+
   return (
     <section className="relative w-full h-screen min-h-[700px] flex items-end overflow-hidden">
-      {/* Per-slide media background (keyed so it swaps when slide changes) */}
-      <div key={currentIndex}>
+      {/* Per-slide media background (keyed by source so shared video plays continuously) */}
+      <div key={mediaSource}>
         {slide.video_url ? (
           <video
             key="video"
@@ -78,54 +127,21 @@ export default function HeroCarousel({ initialSlides }: { initialSlides?: HeroSl
       {/* Slide text + CTA — positioned at bottom */}
       <div className="relative z-10 w-full px-4 sm:px-8 lg:px-12 pb-16 sm:pb-20 lg:pb-24">
         <div className="max-w-[1400px] mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-            >
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-                {/* Left: text */}
-                <div className="max-w-3xl text-left">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-serif text-white leading-[1.1] tracking-tight mb-6">
-                    {slide.title}
-                  </h1>
-
-                  {slide.subtitle && (
-                    <p className="text-lg sm:text-xl text-white/80 mb-3 font-medium">
-                      {slide.subtitle}
-                    </p>
-                  )}
-
-                  {slide.description && (
-                    <p className="text-sm sm:text-base text-white/60 leading-relaxed mb-8 max-w-2xl">
-                      {slide.description}
-                    </p>
-                  )}
-                </div>
-
-                {/* Right: CTA buttons */}
-                <div className="flex flex-wrap items-center gap-4 shrink-0">
-                  {slide.cta_label && slide.cta_href && (
-                    <Link
-                      href={slide.cta_href}
-                      className="bg-[#96e048] hover:bg-[#83cc37] text-[#162e1e] font-bold text-xs sm:text-sm tracking-wider uppercase px-7 py-3.5 transition-all duration-200"
-                    >
-                      {slide.cta_label}
-                    </Link>
-                  )}
-                  <Link
-                    href="/contact"
-                    className="border border-white/90 bg-black/20 hover:bg-white hover:text-[#162e1e] text-white font-bold text-xs sm:text-sm tracking-wider uppercase px-7 py-3.5 transition-all duration-200 backdrop-blur-sm"
-                  >
-                    REQUEST A QUOTE
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+          {animationsOn ? (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              >
+                {slideText}
+              </motion.div>
+            </AnimatePresence>
+          ) : (
+            <div key={currentIndex}>{slideText}</div>
+          )}
 
           {/* Slide indicator dots */}
           <div className="mt-12 flex items-center gap-2 pb-2">
