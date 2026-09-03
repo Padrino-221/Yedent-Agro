@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #28282c;
+  --background: #f0eee9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body, header, nav, button, input, a {
+  font-family: var(--font-archivo), sans-serif;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-serif {
+    font-family: var(--font-archivo), sans-serif;
+  }
+
+  .font-body {
+    font-family: var(--font-archivo), sans-serif;
+  }
+
+  /* Eyebrow label — square green dot, Archivo Narrow uppercase */
+  .kicker {
+    @apply inline-flex items-center gap-2.5 px-0 py-1.5 text-[13px] font-medium uppercase tracking-[0.06em];
+    font-family: var(--font-archivo-narrow), sans-serif;
+    color: #2a4e1b;
+  }
+
+  .kicker::before {
+    content: '';
+    @apply w-2 h-2 bg-lime-600;
+  }
+
+  .kicker-light {
+    @apply inline-flex items-center gap-2.5 px-0 py-1.5 text-[13px] font-medium uppercase tracking-[0.06em];
+    font-family: var(--font-archivo-narrow), sans-serif;
+    color: #afe67f;
+  }
+
+  .kicker-light::before {
+    content: '';
+    @apply w-2 h-2 bg-lime;
+  }
+
+  .bg-dark-green {
+    background-color: #233f2e;
+  }
+
+  .bg-lime-accent {
+    background-color: #afe67f;
+  }
+
+  .text-dark-green {
+    color: #233f2e;
+  }
+
+  .text-lime-accent {
+    color: #afe67f;
+  }
+
+  .border-dark {
+    border-color: #233f2e;
+  }
+
+  .border-lime {
+    border-color: #afe67f;
+  }
+
+  .pill-tag {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium uppercase tracking-[0.06em] border border-dark/10 bg-white text-dark;
+    font-family: 'Archivo Narrow', sans-serif;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+  }
+
+  .pill-tag:hover {
+    @apply border-dark bg-dark text-white;
+  }
+
+  .pill-tag-active {
+    @apply bg-dark text-white border-dark;
+  }
+
+  .card-premium {
+    @apply bg-white border border-dark/10;
+    border-radius: 12px;
+    transition: all 0.35s ease;
+  }
+
+  .card-premium:hover {
+    border-color: rgba(35, 63, 46, 0.3);
+    transform: translateY(-3px);
+  }
+
+  /* Square-ish buttons — 5px radius, Archivo Narrow uppercase */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm font-bold uppercase tracking-[0.06em] text-white transition-all duration-300;
+    font-family: 'Archivo Narrow', sans-serif;
+    background: #233f2e;
+    color: #fffdf7;
+    border-radius: 5px;
+  }
+
+  .btn-primary:hover {
+    background: #afe67f;
+    color: #28282c;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm font-bold uppercase tracking-[0.06em] transition-all duration-300;
+    font-family: 'Archivo Narrow', sans-serif;
+    border: 1px solid #233f2e;
+    color: #233f2e;
+    background: transparent;
+    border-radius: 5px;
+  }
+
+  .btn-secondary:hover {
+    background: #233f2e;
+    color: #fffdf7;
+  }
+
+  .btn-lime {
+    @apply inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm font-bold uppercase tracking-[0.06em] text-dark transition-all duration-300;
+    font-family: 'Archivo Narrow', sans-serif;
+    background: #afe67f;
+    color: #28282c;
+    border-radius: 5px;
+  }
+
+  .btn-lime:hover {
+    background: #fffdf7;
+    color: #28282c;
+  }
+
+  .btn-white {
+    @apply inline-flex items-center justify-center gap-2.5 px-8 py-3.5 text-sm font-bold uppercase tracking-[0.06em] text-dark transition-all duration-300;
+    font-family: 'Archivo Narrow', sans-serif;
+    background: #fff;
+    color: #28282c;
+    border-radius: 5px;
+  }
+
+  .btn-white:hover {
+    background: #afe67f;
+    color: #28282c;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-20;
+  }
+
+  .container-premium {
+    @apply max-w-[1280px] mx-auto px-5 sm:px-6 lg:px-8;
+  }
+
+  /* Confetti dot pattern for playful sections */
+  .dots {
+    background-image: radial-gradient(rgba(35, 63, 46, 0.12) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+  }
+
+  .dots-white {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0eee9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #233f2e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #15523b;
+}
+
+/* Selection color */
+::selection {
+  background-color: #afe67f;
+  color: #28282c;
+}
