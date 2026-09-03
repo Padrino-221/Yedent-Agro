@@ -235,9 +235,10 @@ h1, h2, h3, h4, h5, h6 {
 .partner-track {
   display: flex;
   width: max-content;
-  animation: partner-marquee 45s linear infinite;
+  animation: partner-marquee 30s linear infinite;
 }
 
+/* Pause only while the pointer is over the strip */
 .partner-marquee:hover .partner-track {
   animation-play-state: paused;
 }
@@ -249,17 +250,4 @@ h1, h2, h3, h4, h5, h6 {
 
 .partner-scroll::-webkit-scrollbar {
   display: none;
-}
-
-/* No auto-scroll on phones (swipe instead) or for reduced-motion users */
-@media (max-width: 767px) {
-  .partner-track {
-    animation: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .partner-track {
-    animation: none;
-  }
 }
