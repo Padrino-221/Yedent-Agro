@@ -107,6 +107,14 @@ export interface Award {
   is_published: boolean;
 }
 
+export interface Partner {
+  id: string;
+  name: string;
+  logo_url: string | null;
+  sort_order: number;
+  is_published: boolean;
+}
+
 export interface HeroSlide {
   id: string;
   title: string;
@@ -191,6 +199,10 @@ export async function getSettings(): Promise<SiteSettings> {
 
 export async function getHeroSlides(): Promise<HeroSlide[]> {
   return request<HeroSlide[]>('/hero-slides');
+}
+
+export async function getPartners(): Promise<Partner[]> {
+  return request<Partner[]>('/partners');
 }
 
 export async function getNewsEvents(filters: { type?: 'news' | 'event'; limit?: string } = {}): Promise<NewsEvent[]> {

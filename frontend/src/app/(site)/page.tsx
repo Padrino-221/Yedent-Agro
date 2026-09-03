@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import { getSettings, getSubsidiaries, getProducts, getAwards, getNewsEvents, getHeroSlides } from '@/lib/api'
+import { getSettings, getSubsidiaries, getProducts, getAwards, getNewsEvents, getHeroSlides, getPartners } from '@/lib/api'
 import HeroCarousel from '@/components/HeroCarousel'
 import YouTubeVideo from '@/components/YouTubeVideo'
-import { SectionHeader, Card, CTABlock } from '@/components/SectionComponents'
+import { SectionHeader, Card } from '@/components/SectionComponents'
+import PartnersCarousel from '@/components/PartnersCarousel'
 import { Reveal, RevealStagger, RevealItem, TiltCard, Parallax } from '@/components/Motion'
 import { PiBuildingsDuotone, PiTrophyDuotone, PiShoppingBagDuotone, PiTruckDuotone, PiLeafDuotone, PiUsersDuotone, PiMapPinDuotone, PiPhoneDuotone, PiEnvelopeDuotone, PiArrowRightDuotone } from 'react-icons/pi'
 import { subsidiaryImage, sectorImage, newsImage } from '@/lib/images'
@@ -38,14 +39,16 @@ export default async function Home() {
     subsidiaries,
     products,
     awards,
-    news
+    news,
+    partners
   ] = await Promise.all([
     getSettings(),
     getHeroSlides(),
     getSubsidiaries(),
     getProducts({ sector: 'consumer' }),
     getAwards(),
-    getNewsEvents({ limit: '3' })
+    getNewsEvents({ limit: '3' }),
+    getPartners()
   ])
 
   const orgName = settings?.company_name || 'Yedent Agro Group'
@@ -345,14 +348,20 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="section-padding bg-cream overflow-hidden">
-        <div className="container-premium">
-          <Reveal direction="none">
-            <CTABlock />
-          </Reveal>
-        </div>
-      </section>
+      {/* Partners */}
+      {partners.length > 0 && (
+        <section className="section-padding bg-cream overflow-hidden">
+          <div className="container-premium">
+            <Reveal direction="none">
+              <div className="text-center mb-10">
+                <span className="kicker justify-center mb-4">Partnerships</span>
+                <h2 className="text-4xl md:text-5xl font-serif text-dark leading-[1.05]">Our Partners</h2>
+              </div>
+            </Reveal>
+            <PartnersCarousel partners={partners} />
+          </div>
+        </section>
+      )}
     </>
   )
 }

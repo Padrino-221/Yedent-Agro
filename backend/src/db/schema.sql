@@ -168,6 +168,17 @@ CREATE TABLE IF NOT EXISTS news_events (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- ============ PARTNERS (partner logo strip on the landing page) ============
+CREATE TABLE IF NOT EXISTS partners (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(255) NOT NULL,
+  logo_url TEXT,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- ============ COMPANY INFO / SETTINGS ============
 CREATE TABLE IF NOT EXISTS site_settings (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

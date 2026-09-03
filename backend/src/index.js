@@ -29,6 +29,7 @@ app.use('/api/products', require('./routes/products'));
 app.use('/api/departments', require('./routes/departments'));
 app.use('/api/sales-reps', require('./routes/salesReps'));
 app.use('/api/awards', require('./routes/awards'));
+app.use('/api/partners', require('./routes/partners'));
 app.use('/api/settings', require('./routes/settings'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/upload', require('./routes/upload'));

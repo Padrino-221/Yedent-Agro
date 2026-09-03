@@ -259,6 +259,19 @@ INSERT INTO news_events (title, slug, summary, type, event_date, published_at) V
   ('New fortified foods for institutional markets', 'new-fortified-foods-institutional', 'Yedent Agro Foods continues to expand its fortified cereal-legume product line for institutions and consumers.', 'news', NULL, NOW())
 ON CONFLICT (slug) DO NOTHING;
 
+-- ============ PARTNERS (landing page logo carousel) ============
+INSERT INTO partners (name, logo_url, sort_order)
+SELECT v.name, v.logo_url, v.sort_order
+FROM (VALUES
+  ('Partner 1', '/images/partners/brand-1.svg', 1),
+  ('Partner 2', '/images/partners/brand-3.svg', 2),
+  ('Partner 3', '/images/partners/brand-4.svg', 3),
+  ('Partner 4', '/images/partners/brand-5.svg', 4),
+  ('Partner 5', '/images/partners/brand-6.svg', 5),
+  ('Partner 6', '/images/partners/brand-7.svg', 6)
+) AS v(name, logo_url, sort_order)
+WHERE NOT EXISTS (SELECT 1 FROM partners);
+
 -- ============ DEFAULT ADMIN USER ============
 -- Default login: admin@yedentghana.com / admin123
 -- IMPORTANT: change this password after first login (via the CMS Users page).

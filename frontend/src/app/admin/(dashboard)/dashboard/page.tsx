@@ -13,6 +13,7 @@ import {
   PiMapPinDuotone,
   PiTrophyDuotone,
   PiImagesDuotone,
+  PiHandshakeDuotone,
   PiNewspaperDuotone,
   PiPlusDuotone,
   PiArrowSquareOutDuotone,
@@ -26,6 +27,7 @@ interface Counts {
   salesReps: number
   awards: number
   heroSlides: number
+  partners: number
   news: number
   users: number
 }
@@ -39,13 +41,14 @@ export default function AdminDashboardPage() {
   const load = useCallback(async () => {
     setError(null)
     try {
-      const [products, subsidiaries, departments, salesReps, awards, heroSlides, news] = await Promise.all([
+      const [products, subsidiaries, departments, salesReps, awards, heroSlides, partners, news] = await Promise.all([
         adminApi.products.list(),
         adminApi.subsidiaries.list(),
         adminApi.departments.list(),
         adminApi.salesReps.list(),
         adminApi.awards.list(),
         adminApi.heroSlides.list(),
+        adminApi.partners.list(),
         adminApi.news.list(),
       ])
       let users: AdminUser[] = []
@@ -60,6 +63,7 @@ export default function AdminDashboardPage() {
         salesReps: salesReps.length,
         awards: awards.length,
         heroSlides: heroSlides.length,
+        partners: partners.length,
         news: news.length,
         users: users.length,
       })
@@ -83,6 +87,7 @@ export default function AdminDashboardPage() {
     { label: 'Sales Reps', value: counts?.salesReps, href: '/admin/sales-reps', icon: PiMapPinDuotone },
     { label: 'Awards', value: counts?.awards, href: '/admin/awards', icon: PiTrophyDuotone },
     { label: 'Hero Slides', value: counts?.heroSlides, href: '/admin/hero-slides', icon: PiImagesDuotone },
+    { label: 'Partners', value: counts?.partners, href: '/admin/partners', icon: PiHandshakeDuotone },
     { label: 'News & Events', value: counts?.news, href: '/admin/news', icon: PiNewspaperDuotone },
     ...(isGroupAdmin ? [{ label: 'Admin Users', value: counts?.users, href: '/admin/users', icon: PiShieldCheckDuotone }] : []),
   ]
@@ -130,6 +135,7 @@ export default function AdminDashboardPage() {
                 { label: 'Add a hero slide', href: '/admin/hero-slides/new' },
                 { label: 'Update site settings', href: '/admin/settings' },
                 { label: 'Add a sales rep', href: '/admin/sales-reps/new' },
+                { label: 'Add a partner', href: '/admin/partners/new' },
                 { label: 'Add an award', href: '/admin/awards/new' },
               ].map((a) => (
                 <Link
