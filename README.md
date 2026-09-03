@@ -70,11 +70,6 @@ content on the site — no hardcoded data:
 
 After running `npm run setup-db`, a default administrator is created:
 
-```
-Email:    admin@yedentghana.com
-Password: admin123
-```
-
 > **Security:** change this password after first login (Users page → edit → new password),
 > and set a strong `JWT_SECRET` in `backend/.env` before deploying.
 
