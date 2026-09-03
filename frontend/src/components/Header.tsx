@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { FiPhone, FiMail, FiSearch, FiMenu, FiX, FiChevronDown } from 'react-icons/fi'
-import { FaFacebookF, FaInstagram, FaXTwitter } from 'react-icons/fa6'
 import { useSettings } from '@/lib/useSettings'
 import { settingValue } from '@/lib/settingsUtils'
+import { getSocialLinks } from '@/lib/socials'
 import type { SiteSettings } from '@/lib/api'
 
 const navigation = [
@@ -35,13 +35,13 @@ const navigation = [
 export default function Header({ initialSettings }: { initialSettings?: SiteSettings | null }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const pathname = usePathname()
+  const router = useRouter()
   const { settings } = useSettings(initialSettings)
   const phonePrimary = settingValue(settings, 'phone_primary', '+233 20 816 6021')
   const email = settingValue(settings, 'email', 'info@yedentghana.com')
-  const facebookUrl = settingValue(settings, 'facebook_url', 'https://facebook.com')
-  const instagramUrl = settingValue(settings, 'instagram_url', 'https://instagram.com')
-  const twitterUrl = settingValue(settings, 'twitter_url', 'https://x.com')
+  const socials = getSocialLinks(settings)
 
   function isActive(href: string) {
     if (href === '/') return pathname === '/'
@@ -49,6 +49,15 @@ export default function Header({ initialSettings }: { initialSettings?: SiteSett
   }
 
   const isHome = pathname === '/'
+
+  function handleSearchSubmit(e: FormEvent) {
+    e.preventDefault()
+    const q = searchQuery.trim()
+    if (!q) return
+    router.push(`/search?q=${encodeURIComponent(q)}`)
+    setSearchOpen(false)
+    setSearchQuery('')
+  }
 
   return (
     <header className={`${isHome ? 'absolute' : 'relative'} top-0 left-0 right-0 z-50 w-full`}>
@@ -59,21 +68,17 @@ export default function Header({ initialSettings }: { initialSettings?: SiteSett
           <div className="lg:hidden flex items-center justify-between py-3">
             <a
               href={`tel:${phonePrimary.replace(/[^0-9+]/g, '')}`}
-              className="flex items-center gap-2 text-white/90"
+              className="flex items-center gap-2 text-white/90 min-w-0"
             >
-              <FiPhone className="w-4 h-4 text-[#82db58]" />
-              <span className="text-sm font-medium">{phonePrimary}</span>
+              <FiPhone className="w-4 h-4 text-[#82db58] shrink-0" />
+              <span className="text-sm font-medium truncate">{phonePrimary}</span>
             </a>
-            <div className="flex items-center text-white/80">
-              <a href={facebookUrl} target="_blank" rel="noreferrer" aria-label="Facebook" className="flex items-center justify-center w-11 h-11 hover:text-[#82db58] transition-colors">
-                <FaFacebookF className="w-4 h-4" />
-              </a>
-              <a href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" className="flex items-center justify-center w-11 h-11 hover:text-[#82db58] transition-colors">
-                <FaInstagram className="w-4 h-4" />
-              </a>
-              <a href={twitterUrl} target="_blank" rel="noreferrer" aria-label="X (Twitter)" className="flex items-center justify-center w-11 h-11 hover:text-[#82db58] transition-colors">
-                <FaXTwitter className="w-4 h-4" />
-              </a>
+            <div className="flex items-center text-white/80 shrink-0">
+              {socials.map(({ platform, url, Icon }) => (
+                <a key={platform} href={url} target="_blank" rel="noreferrer" aria-label={platform} className="flex items-center justify-center w-9 h-9 hover:text-[#82db58] transition-colors">
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
@@ -95,15 +100,11 @@ export default function Header({ initialSettings }: { initialSettings?: SiteSett
               </Link>
             </div>
             <div className="flex items-center gap-4 text-white/80">
-              <a href={facebookUrl} target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-[#82db58] transition-colors">
-                <FaFacebookF className="w-4 h-4" />
-              </a>
-              <a href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-[#82db58] transition-colors">
-                <FaInstagram className="w-4 h-4" />
-              </a>
-              <a href={twitterUrl} target="_blank" rel="noreferrer" aria-label="X (Twitter)" className="hover:text-[#82db58] transition-colors">
-                <FaXTwitter className="w-4 h-4" />
-              </a>
+              {socials.map(({ platform, url, Icon }) => (
+                <a key={platform} href={url} target="_blank" rel="noreferrer" aria-label={platform} className="hover:text-[#82db58] transition-colors">
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -216,18 +217,27 @@ export default function Header({ initialSettings }: { initialSettings?: SiteSett
 
         {/* Search input bar popup */}
         {searchOpen && (
-          <div className="max-w-[1400px] mx-auto mt-3 py-2 px-4 bg-white/10 rounded-md border border-white/20 flex items-center gap-3">
+          <form
+            onSubmit={handleSearchSubmit}
+            role="search"
+            className="max-w-[1400px] mx-auto mt-3 py-2 px-4 bg-white/10 rounded-md border border-white/20 flex items-center gap-3"
+          >
             <FiSearch className="w-4 h-4 text-white/70" />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search products, news, subsidiaries..."
               className="bg-transparent text-white text-sm focus:outline-none w-full placeholder-white/50"
               autoFocus
             />
-            <button onClick={() => setSearchOpen(false)} className="text-white/70 hover:text-white text-xs">
+            <button type="submit" className="text-[#82db58] hover:text-white text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+              Search
+            </button>
+            <button type="button" onClick={() => setSearchOpen(false)} className="text-white/70 hover:text-white text-xs">
               Close
             </button>
-          </div>
+          </form>
         )}
 
         {/* Mobile menu — full-screen overlay */}

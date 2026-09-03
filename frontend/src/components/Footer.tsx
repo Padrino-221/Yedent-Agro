@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { FiChevronRight, FiArrowUp } from 'react-icons/fi'
-import { FaFacebookF, FaInstagram, FaXTwitter, FaLinkedinIn } from 'react-icons/fa6'
 import { PiPhoneDuotone, PiEnvelopeDuotone, PiMapPinDuotone, PiClockDuotone, PiArrowRightDuotone, PiBuildingsDuotone, PiLeafDuotone } from 'react-icons/pi'
 import { useSettings } from '@/lib/useSettings'
 import { settingValue } from '@/lib/settingsUtils'
+import { getSocialLinks } from '@/lib/socials'
 import type { SiteSettings } from '@/lib/api'
 
 const footerLinks = [
@@ -39,12 +39,7 @@ export default function Footer({ initialSettings }: { initialSettings?: SiteSett
   const email = settingValue(settings, 'email', 'info@yedentghana.com')
   const address = settingValue(settings, 'head_office_address', 'P.O. Box 1306, Sunyani – Bono Region, Ghana')
 
-  const socials = [
-    { name: 'Facebook', href: settingValue(settings, 'facebook_url', 'https://facebook.com'), Icon: FaFacebookF },
-    { name: 'Instagram', href: settingValue(settings, 'instagram_url', 'https://instagram.com'), Icon: FaInstagram },
-    { name: 'X (Twitter)', href: settingValue(settings, 'twitter_url', 'https://x.com'), Icon: FaXTwitter },
-    { name: 'LinkedIn', href: settingValue(settings, 'linkedin_url', 'https://linkedin.com'), Icon: FaLinkedinIn },
-  ]
+  const socials = getSocialLinks(settings)
 
   if (loading) return null
 
@@ -114,13 +109,13 @@ export default function Footer({ initialSettings }: { initialSettings?: SiteSett
                 {description}
               </p>
               <div className="flex items-center gap-3">
-                {socials.map(({ name, href, Icon }) => (
+                {socials.map(({ platform, url, Icon }) => (
                   <a
-                    key={name}
-                    href={href}
+                    key={platform}
+                    href={url}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label={name}
+                    aria-label={platform}
                     className="w-10 h-10 inline-flex items-center justify-center border border-white/20 text-white/75 hover:bg-[#AFE67F] hover:text-[#12281c] hover:border-[#AFE67F] transition-colors"
                     style={{ borderRadius: 5 }}
                   >

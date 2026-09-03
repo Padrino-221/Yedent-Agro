@@ -3,12 +3,13 @@
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/admin-auth'
-import { PiLockKeyDuotone, PiEnvelopeDuotone, PiCaretLeftDuotone } from 'react-icons/pi'
+import { PiLockKeyDuotone, PiEnvelopeDuotone, PiCaretLeftDuotone, PiEyeDuotone, PiEyeSlashDuotone } from 'react-icons/pi'
 
 export default function AdminLoginPage() {
   const { login } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
@@ -67,14 +68,22 @@ export default function AdminLoginPage() {
               <div className="relative">
                 <PiLockKeyDuotone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-dark/35" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-dark/20 rounded focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/10"
+                  className="w-full pl-10 pr-11 py-2.5 text-sm bg-white border border-dark/20 rounded focus:outline-none focus:border-dark focus:ring-2 focus:ring-dark/10"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 p-2 text-dark/40 hover:text-dark/80 transition-colors"
+                >
+                  {showPassword ? <PiEyeSlashDuotone className="w-4 h-4" /> : <PiEyeDuotone className="w-4 h-4" />}
+                </button>
               </div>
             </div>
             <button

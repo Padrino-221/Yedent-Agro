@@ -76,12 +76,18 @@ export const pages: PageDef[] = [
       {
         id: 'social',
         title: 'Social media',
-        description: 'Links used by the header and footer.',
-        fields: [
-          { key: 'facebook_url', label: 'Facebook', type: 'text', help: 'https://facebook.com/…' },
-          { key: 'instagram_url', label: 'Instagram', type: 'text', help: 'https://instagram.com/…' },
-          { key: 'twitter_url', label: 'X (Twitter)', type: 'text', help: 'https://x.com/…' },
-          { key: 'linkedin_url', label: 'LinkedIn', type: 'text', help: 'https://linkedin.com/…' },
+        description: 'Links shown in the header and footer — add as many platforms as you like. Enter the platform name (Facebook, Instagram, TikTok, YouTube, WhatsApp, X, LinkedIn, Threads…) and its URL; recognised platforms get their own brand icon.',
+        rows: [
+          {
+            key: 'social_links',
+            label: 'Social links',
+            addLabel: 'Add social link',
+            emptyText: 'No social links yet.',
+            fields: [
+              { key: 'platform', label: 'Platform', type: 'text', placeholder: 'TikTok' },
+              { key: 'url', label: 'URL', type: 'text', placeholder: 'https://tiktok.com/@yedentagro' },
+            ],
+          },
         ],
       },
       {

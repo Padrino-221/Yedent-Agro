@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/admin-auth'
 import { Dropdown } from './dropdown'
@@ -69,8 +70,14 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     <div className="flex flex-col h-full">
       <div className="px-5 py-5 border-b border-white/10">
         <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={() => setSidebarOpen(false)}>
-          <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center">
-            <span className="text-dark font-extrabold text-sm leading-none">Y</span>
+          <div className="w-9 h-9 rounded-full bg-white overflow-hidden flex items-center justify-center shrink-0">
+            <Image
+              src="/yedent-logo.png"
+              alt="Yedent Agro Group Logo"
+              width={36}
+              height={36}
+              className="w-full h-full object-contain"
+            />
           </div>
           <div>
             <p className="text-white font-bold text-sm leading-none uppercase tracking-wide">Yedent CMS</p>

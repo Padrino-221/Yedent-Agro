@@ -16,10 +16,7 @@ INSERT INTO site_settings (key, value) VALUES
   ('footer_description', 'A wholly Ghanaian owned agricultural company producing affordable, convenient and nutritious cereal staple foods, animal feed and poultry products.'),
   ('csr_statement', 'Our corporate social responsibility involves giving to orphanages and the needy in the regions within which the company operates.'),
   ('homepage_video_url', NULL),
-  ('facebook_url', 'https://facebook.com'),
-  ('instagram_url', 'https://instagram.com'),
-  ('twitter_url', 'https://x.com'),
-  ('linkedin_url', 'https://linkedin.com'),
+  ('social_links', '[{"platform":"Facebook","url":"https://facebook.com"},{"platform":"Instagram","url":"https://instagram.com"},{"platform":"X","url":"https://x.com"},{"platform":"LinkedIn","url":"https://linkedin.com"}]'),
   ('core_values', '[{"title":"Teamwork & Knowledge Sharing","description":"We promote teamwork and exchange of varied knowledge for optimum outcomes."},{"title":"The God Factor","description":"We are in a covenant with God: entrusting the business into His able Hands."},{"title":"Safety Consciousness","description":"We aspire to build the culture of safety at all levels of the organization."},{"title":"Caring & Giving","description":"Committed to contributing our time and resources to the needy and vulnerable."},{"title":"Fairness","description":"We are committed to demonstrating fairness in every enterprise we embark on."},{"title":"Transparency & Integrity","description":"We uphold utmost integrity and the principle of being transparent in all dealings."}]')
 ON CONFLICT (key) DO NOTHING;
 -- ============ SUBSIDIARIES ============
