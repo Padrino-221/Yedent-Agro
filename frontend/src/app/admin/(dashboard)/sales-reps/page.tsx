@@ -11,6 +11,17 @@ export default function SalesRepsListPage() {
       description="Regional sales network directory."
       newHref="/admin/sales-reps/new"
       columns={[
+        {
+          key: 'image_url',
+          label: 'Photo',
+          render: (r) =>
+            r.image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={r.image_url} alt="" className="h-10 w-10 rounded-full object-cover" />
+            ) : (
+              <span className="text-dark/40">—</span>
+            ),
+        },
         { key: 'name', label: 'Name', render: (r) => <span className="font-semibold text-dark">{r.name}</span> },
         { key: 'region', label: 'Region', render: (r) => <span className="text-dark/70">{r.region}</span> },
         { key: 'territory', label: 'Territory', render: (r) => <span className="text-dark/60">{r.territory || '—'}</span> },

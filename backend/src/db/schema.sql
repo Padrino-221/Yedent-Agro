@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS sales_representatives (
   territory VARCHAR(255),
   phone VARCHAR(50) NOT NULL,
   email VARCHAR(255),
+  image_url TEXT,
   sort_order INT NOT NULL DEFAULT 0,
   is_published BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -208,6 +209,7 @@ ALTER TABLE departments ADD COLUMN IF NOT EXISTS subsidiary_id UUID REFERENCES s
 ALTER TABLE departments ADD COLUMN IF NOT EXISTS head_image_url TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS video_url TEXT;
 ALTER TABLE sales_representatives ADD COLUMN IF NOT EXISTS subsidiary_id UUID REFERENCES subsidiaries(id) ON DELETE SET NULL;
+ALTER TABLE sales_representatives ADD COLUMN IF NOT EXISTS image_url TEXT;
 
 -- ============ INDEXES ============
 CREATE INDEX IF NOT EXISTS idx_products_subsidiary ON products(subsidiary_id);

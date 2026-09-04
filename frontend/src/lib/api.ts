@@ -102,6 +102,7 @@ export interface SalesRep {
   territory: string | null;
   phone: string;
   email: string | null;
+  image_url: string | null;
   sort_order: number;
   is_published: boolean;
   subsidiary_name: string | null;

@@ -16,6 +16,7 @@ export default function SalesRepFormPage({ params }: { params: Promise<{ id: str
 
   const fields: FieldDef[] = [
     { name: 'name', label: 'Full name', type: 'text', required: true },
+    { name: 'image_url', label: 'Photo', type: 'image', help: 'Portrait photo of the representative. Shown on the sales network cards.' },
     {
       name: 'subsidiary_id',
       label: 'Subsidiary',

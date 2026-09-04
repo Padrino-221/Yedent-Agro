@@ -1,10 +1,20 @@
 import type { Metadata } from 'next'
 import { getSettings, getSalesReps, getSubsidiaries, type SalesRep } from '@/lib/api'
-import { SectionHeader, Card } from '@/components/SectionComponents'
-import { PiPhoneDuotone, PiMapPinDuotone, PiUserDuotone, PiArrowLeftDuotone, PiCaretDownDuotone } from 'react-icons/pi'
+import { SectionHeader } from '@/components/SectionComponents'
+import { PiPhoneDuotone, PiMapPinDuotone, PiArrowLeftDuotone, PiEnvelopeDuotone } from 'react-icons/pi'
 import { settingValue } from '@/lib/settingsUtils'
 import { SectionOrbs } from '@/components/ImpactBand'
 import Link from 'next/link'
+
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings()
@@ -82,30 +92,43 @@ export default async function SalesNetworkPage() {
                 heading={sub ? `${sub.name} — Sales Team` : 'Sales Team'}
                 description={`Contact our ${sub?.name || 'sales'} representatives for ordering and distribution inquiries.`}
               />
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 {reps.map((rep) => (
-                  <Card key={rep.id} className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-lime/20 flex items-center justify-center text-lime">
-                      <PiUserDuotone className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-lg font-serif text-dark mb-1">{rep.name}</h3>
-                    <p className="text-dark/75 text-sm font-medium mb-4">{settingValue(settings, 'sales_rep_role_label', 'Sales Representative')}</p>
-                    <div className="flex justify-center gap-2 text-xs text-dark/75 mb-4">
-                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-cream rounded">
-                        <PiMapPinDuotone className="w-3 h-3" />
-                        {rep.region}
-                      </span>
-                      {rep.territory && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-cream rounded">
-                          {rep.territory}
-                        </span>
+                  <div key={rep.id} className="card-premium overflow-hidden flex flex-col md:flex-row">
+                    <div className="relative shrink-0 aspect-[4/3] md:aspect-auto md:w-[38%] overflow-hidden bg-lime-100/70">
+                      {rep.image_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={rep.image_url} alt={rep.name} className="absolute inset-0 h-full w-full object-cover" />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="font-serif text-3xl text-lime-800">{initials(rep.name)}</span>
+                        </div>
                       )}
                     </div>
-                    <a href={`tel:${rep.phone.replace(/[^0-9+]/g, '')}`} className="inline-flex items-center gap-2 text-[#214d39] font-semibold text-sm hover:text-[#17392d] transition-colors">
-                      <PiPhoneDuotone className="w-4 h-4" />
-                      {rep.phone}
-                    </a>
-                  </Card>
+                    <div className="flex-1 p-6 md:p-7 flex flex-col justify-center items-start">
+                      <h3 className="text-xl md:text-2xl font-serif text-dark mb-1.5">{rep.name}</h3>
+                      <p className="text-lime-700 text-[11px] font-bold uppercase tracking-[0.18em] mb-3">
+                        {settingValue(settings, 'sales_rep_role_label', 'Sales Representative')}
+                      </p>
+                      <p className="inline-flex items-center gap-1.5 text-dark/75 text-sm mb-3">
+                        <PiMapPinDuotone className="w-3.5 h-3.5 shrink-0 text-lime-700" />
+                        {rep.region}
+                        {rep.territory ? ` · ${rep.territory}` : ''}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                        <a href={`tel:${rep.phone.replace(/[^0-9+]/g, '')}`} className="inline-flex items-center gap-1.5 text-[#214d39] font-semibold text-sm hover:text-[#17392d] transition-colors">
+                          <PiPhoneDuotone className="w-4 h-4" />
+                          {rep.phone}
+                        </a>
+                        {rep.email && (
+                          <a href={`mailto:${rep.email}`} className="inline-flex items-center gap-1.5 text-dark/70 font-medium text-sm hover:text-dark transition-colors">
+                            <PiEnvelopeDuotone className="w-4 h-4" />
+                            {rep.email}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
