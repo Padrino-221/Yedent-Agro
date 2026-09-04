@@ -77,7 +77,7 @@ export default async function ContactPage() {
                     <p className="font-semibold text-dark">{settingValue(settings, 'contact_phone_label', 'Phone')}</p>
                     <p className="text-dark/75">
                       {[settings?.phone_primary, settings?.phone_secondary].filter((p): p is string => !!p).map((p) => (
-                        <a key={p} href={`tel:${p.replace(/[^0-9+]/g, '')}`} className="block hover:text-lime transition-colors">
+                        <a key={p} href={`tel:${p.replace(/[^0-9+]/g, '')}`} className="block text-[#214d39] hover:text-[#17392d] transition-colors">
                           {p}
                         </a>
                       )) || '—'}

@@ -101,7 +101,7 @@ export default async function SalesNetworkPage() {
                         </span>
                       )}
                     </div>
-                    <a href={`tel:${rep.phone.replace(/[^0-9+]/g, '')}`} className="inline-flex items-center gap-2 text-lime font-semibold text-sm hover:text-dark transition-colors">
+                    <a href={`tel:${rep.phone.replace(/[^0-9+]/g, '')}`} className="inline-flex items-center gap-2 text-[#214d39] font-semibold text-sm hover:text-[#17392d] transition-colors">
                       <PiPhoneDuotone className="w-4 h-4" />
                       {rep.phone}
                     </a>

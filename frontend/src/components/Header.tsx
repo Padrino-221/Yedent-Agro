@@ -21,7 +21,7 @@ const navigation = [
     ],
   },
   { name: 'Products', href: '/products' },
-  { name: 'Departments', href: '/departments' },
+  { name: 'Leadership', href: '/departments' },
   { name: 'News & Events', href: '/news' },
   {
     name: 'Contacts',

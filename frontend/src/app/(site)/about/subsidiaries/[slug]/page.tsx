@@ -181,7 +181,7 @@ export default async function SubsidiaryDetailPage({ params }: { params: Promise
                       <td className="py-4 text-dark/70">{rep.region}</td>
                       <td className="py-4 text-dark/70">{rep.territory || '—'}</td>
                       <td className="py-4 text-dark/70">
-                        <a href={`tel:${rep.phone.replace(/[^0-9+]/g, '')}`} className="hover:text-lime transition-colors">
+                        <a href={`tel:${rep.phone.replace(/[^0-9+]/g, '')}`} className="text-[#214d39] hover:text-[#17392d] transition-colors">
                           {rep.phone}
                         </a>
                       </td>

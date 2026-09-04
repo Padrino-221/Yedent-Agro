@@ -1,12 +1,23 @@
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5000/api';
+const rawApiBase = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5000/api';
+
+export const API_BASE = (() => {
+  const normalized = rawApiBase.trim().replace(/\/+$/, '');
+  const withoutAuthSuffix = normalized.endsWith('/auth') ? normalized.slice(0, -5) : normalized;
+  const withoutTrailingApi = withoutAuthSuffix.endsWith('/api') ? withoutAuthSuffix : `${withoutAuthSuffix}/api`;
+
+  return withoutTrailingApi;
+})();
 
 async function request<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     cache: 'no-store',
   });
   if (!res.ok) {
-    throw new Error(`API ${res.status} for ${path}`);
+    const detail = res.status === 401
+      ? 'The frontend is likely hitting the wrong backend URL or an auth route instead of the public API. Check NEXT_PUBLIC_API_URL and make sure it points to the backend API root, e.g. http://127.0.0.1:5000/api.'
+      : `API ${res.status} for ${path}`;
+
+    throw new Error(detail);
   }
   const json = await res.json();
   return json.data as T;
