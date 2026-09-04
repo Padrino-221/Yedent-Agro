@@ -48,7 +48,6 @@ export default function NotFoundView() {
       {/* 404 hero */}
       <section className="relative overflow-hidden bg-[#233F2E]">
         {/* Decorative background */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 dots-white opacity-30" />
         <div
           aria-hidden
           className="pointer-events-none absolute -top-32 -right-24 w-[28rem] h-[28rem] rounded-full blur-3xl"
