@@ -14,6 +14,7 @@ import {
   PiTrophyDuotone,
   PiImagesDuotone,
   PiHandshakeDuotone,
+  PiCrownDuotone,
   PiNewspaperDuotone,
   PiPlusDuotone,
   PiArrowSquareOutDuotone,
@@ -28,6 +29,7 @@ interface Counts {
   awards: number
   heroSlides: number
   partners: number
+  leaders: number
   news: number
   users: number
 }
@@ -41,7 +43,7 @@ export default function AdminDashboardPage() {
   const load = useCallback(async () => {
     setError(null)
     try {
-      const [products, subsidiaries, departments, salesReps, awards, heroSlides, partners, news] = await Promise.all([
+      const [products, subsidiaries, departments, salesReps, awards, heroSlides, partners, leaders, news] = await Promise.all([
         adminApi.products.list(),
         adminApi.subsidiaries.list(),
         adminApi.departments.list(),
@@ -49,6 +51,7 @@ export default function AdminDashboardPage() {
         adminApi.awards.list(),
         adminApi.heroSlides.list(),
         adminApi.partners.list(),
+        adminApi.leaders.list(),
         adminApi.news.list(),
       ])
       let users: AdminUser[] = []
@@ -64,6 +67,7 @@ export default function AdminDashboardPage() {
         awards: awards.length,
         heroSlides: heroSlides.length,
         partners: partners.length,
+        leaders: leaders.length,
         news: news.length,
         users: users.length,
       })
@@ -88,6 +92,7 @@ export default function AdminDashboardPage() {
     { label: 'Awards', value: counts?.awards, href: '/admin/awards', icon: PiTrophyDuotone },
     { label: 'Hero Slides', value: counts?.heroSlides, href: '/admin/hero-slides', icon: PiImagesDuotone },
     { label: 'Partners', value: counts?.partners, href: '/admin/partners', icon: PiHandshakeDuotone },
+    { label: 'Leadership', value: counts?.leaders, href: '/admin/leadership', icon: PiCrownDuotone },
     { label: 'News & Events', value: counts?.news, href: '/admin/news', icon: PiNewspaperDuotone },
     ...(isGroupAdmin ? [{ label: 'Admin Users', value: counts?.users, href: '/admin/users', icon: PiShieldCheckDuotone }] : []),
   ]
@@ -136,6 +141,7 @@ export default function AdminDashboardPage() {
                 { label: 'Update site settings', href: '/admin/settings' },
                 { label: 'Add a sales rep', href: '/admin/sales-reps/new' },
                 { label: 'Add a partner', href: '/admin/partners/new' },
+                { label: 'Add a leader', href: '/admin/leadership/new' },
                 { label: 'Add an award', href: '/admin/awards/new' },
               ].map((a) => (
                 <Link

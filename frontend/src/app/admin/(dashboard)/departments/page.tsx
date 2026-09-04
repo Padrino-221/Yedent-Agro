@@ -12,6 +12,17 @@ export default function DepartmentsListPage() {
       newHref="/admin/departments/new"
       columns={[
         {
+          key: 'head_image_url',
+          label: 'Head photo',
+          render: (d) =>
+            d.head_image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={d.head_image_url} alt="" className="h-10 w-10 rounded-full object-cover" />
+            ) : (
+              <span className="text-dark/40">—</span>
+            ),
+        },
+        {
           key: 'name',
           label: 'Department',
           render: (d) => (

@@ -88,6 +88,7 @@ export interface Department {
   slug: string;
   description: string | null;
   head_of_department: string | null;
+  head_image_url: string | null;
   sort_order: number;
   subsidiary_name: string | null;
   subsidiary_slug: string | null;
@@ -122,6 +123,16 @@ export interface Partner {
   id: string;
   name: string;
   logo_url: string | null;
+  sort_order: number;
+  is_published: boolean;
+}
+
+export interface Leader {
+  id: string;
+  name: string;
+  position: string;
+  bio: string | null;
+  image_url: string | null;
   sort_order: number;
   is_published: boolean;
 }
@@ -214,6 +225,14 @@ export async function getHeroSlides(): Promise<HeroSlide[]> {
 
 export async function getPartners(): Promise<Partner[]> {
   return request<Partner[]>('/partners');
+}
+
+export async function getLeaders(): Promise<Leader[]> {
+  return request<Leader[]>('/leaders');
+}
+
+export async function getLeader(id: string): Promise<Leader> {
+  return request<Leader>(`/leaders/${id}`);
 }
 
 export async function getNewsEvents(filters: { type?: 'news' | 'event'; limit?: string } = {}): Promise<NewsEvent[]> {

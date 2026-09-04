@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS departments (
   slug VARCHAR(255) NOT NULL UNIQUE,
   description TEXT,
   head_of_department VARCHAR(255),
+  head_image_url TEXT,
   sort_order INT NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -168,6 +169,19 @@ CREATE TABLE IF NOT EXISTS news_events (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- ============ LEADERS (executive leadership not tied to a department) ============
+CREATE TABLE IF NOT EXISTS leaders (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(255) NOT NULL,
+  position VARCHAR(255) NOT NULL,
+  bio TEXT,
+  image_url TEXT,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- ============ PARTNERS (partner logo strip on the landing page) ============
 CREATE TABLE IF NOT EXISTS partners (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -191,6 +205,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
 ALTER TABLE subsidiaries ADD COLUMN IF NOT EXISTS hero_image_url TEXT;
 ALTER TABLE subsidiaries ADD COLUMN IF NOT EXISTS tagline VARCHAR(255);
 ALTER TABLE departments ADD COLUMN IF NOT EXISTS subsidiary_id UUID REFERENCES subsidiaries(id) ON DELETE SET NULL;
+ALTER TABLE departments ADD COLUMN IF NOT EXISTS head_image_url TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS video_url TEXT;
 ALTER TABLE sales_representatives ADD COLUMN IF NOT EXISTS subsidiary_id UUID REFERENCES subsidiaries(id) ON DELETE SET NULL;
 

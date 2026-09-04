@@ -37,10 +37,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Searc
   if (!query) {
     return (
       <>
-        <section className="section-padding bg-cream relative overflow-hidden">
+        <section className="pt-12 pb-8 md:pt-16 md:pb-10 bg-cream relative overflow-hidden">
           <SectionOrbs />
           <div className="container-premium relative">
-            <div className="max-w-3xl mx-auto text-center py-10">
+            <div className="max-w-3xl mx-auto text-center">
               <span className="kicker mb-6 justify-center">Site Search</span>
               <h1 className="text-4xl md:text-5xl font-serif text-dark leading-[1.05] mb-6">Search {orgName}</h1>
               <p className="text-dark/75 text-lg leading-relaxed">
@@ -70,10 +70,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Searc
 
   return (
     <>
-      <section className="section-padding bg-cream relative overflow-hidden">
+      <section className="pt-12 pb-8 md:pt-16 md:pb-10 bg-cream relative overflow-hidden">
         <SectionOrbs />
         <div className="container-premium relative">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center">
             <span className="kicker mb-6 justify-center">Site Search</span>
             <h1 className="text-4xl md:text-5xl font-serif text-dark leading-[1.05] mb-6">
               Results for “{query}”

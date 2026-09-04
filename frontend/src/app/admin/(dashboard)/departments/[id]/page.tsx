@@ -24,6 +24,7 @@ export default function DepartmentFormPage({ params }: { params: Promise<{ id: s
       options: [{ value: '', label: 'Group-level (no subsidiary)' }, ...subsidiaries.map((s) => ({ value: s.id, label: s.name }))],
     },
     { name: 'head_of_department', label: 'Head of department', type: 'text' },
+    { name: 'head_image_url', label: 'Head photo', type: 'image', help: 'Portrait photo of the head of department. Shown on the leadership page cards.' },
     { name: 'description', label: 'Description', type: 'textarea', span: 2 },
     { name: 'sort_order', label: 'Sort order', type: 'number', help: 'Lower numbers appear first.' },
   ]

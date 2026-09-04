@@ -6,6 +6,7 @@ import type {
   SalesRep,
   Award,
   Partner,
+  Leader,
   HeroSlide,
   NewsEvent,
   SiteSettings,
@@ -210,6 +211,13 @@ export const adminApi = {
     create: (body: Record<string, unknown>) => createItem<Partner>('partners', body),
     update: (id: string, body: Record<string, unknown>) => updateItem<Partner>('partners', id, body),
     remove: (id: string) => deleteItem('partners', id),
+  },
+  leaders: {
+    list: () => listAll<Leader>('leaders'),
+    get: (id: string) => getOne<Leader>('leaders', id),
+    create: (body: Record<string, unknown>) => createItem<Leader>('leaders', body),
+    update: (id: string, body: Record<string, unknown>) => updateItem<Leader>('leaders', id, body),
+    remove: (id: string) => deleteItem('leaders', id),
   },
   heroSlides: {
     list: () => listAll<HeroSlide>('hero-slides'),

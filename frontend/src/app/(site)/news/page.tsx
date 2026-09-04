@@ -40,10 +40,10 @@ export default async function NewsPage() {
 
   return (
     <>
-      <section className="section-padding bg-cream relative overflow-hidden">
+      <section className="pt-12 pb-8 md:pt-16 md:pb-10 bg-cream relative overflow-hidden">
         <SectionOrbs />
         <div className="container-premium relative">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="max-w-3xl mx-auto text-center">
             <span className="kicker mb-6 justify-center">{settingValue(settings, 'news_hero_kicker', 'Stay Informed')}</span>
             <h1 className="text-4xl md:text-5xl font-serif text-dark leading-[1.05] mb-6">
               {settingValue(settings, 'news_hero_heading', 'News & Events')}

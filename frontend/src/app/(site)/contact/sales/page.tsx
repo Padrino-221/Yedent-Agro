@@ -44,14 +44,14 @@ export default async function SalesNetworkPage() {
 
   return (
     <>
-      <section className="section-padding bg-cream relative overflow-hidden">
+      <section className="pt-12 pb-8 md:pt-16 md:pb-10 bg-cream relative overflow-hidden">
         <SectionOrbs />
         <div className="container-premium relative">
           <Link href="/contact" className="flex w-fit items-center gap-2 text-dark/60 hover:text-dark mb-8 transition-colors">
             <PiArrowLeftDuotone className="w-4 h-4" />
             {settingValue(settings, 'sales_back_label', 'Back to Contact')}
           </Link>
-          <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="max-w-3xl mx-auto text-center">
             <span className="kicker mb-6 justify-center">{settingValue(settings, 'sales_hero_kicker', 'Regional Coverage')}</span>
             <h1 className="text-4xl md:text-5xl font-serif text-dark leading-[1.05] mb-6">
               {settingValue(settings, 'sales_hero_heading', 'Our Sales Network')}
